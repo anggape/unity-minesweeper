@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -29,6 +30,8 @@ namespace Ape.Minesweeper
         private int _nearbyMinesCount;
         private int _x;
         private int _y;
+
+        public event Action<int, int> OnMineSelected;
 
         public bool HasMine => _hasMine;
         public int X => _x;
@@ -73,6 +76,11 @@ namespace Ape.Minesweeper
             _mineDebugObject.SetActive(true);
         }
 
+        internal void Reveal()
+        {
+            _nearbyMinesCountText.gameObject.SetActive(true);
+        }
+
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
             switch (eventData.button)
@@ -91,6 +99,9 @@ namespace Ape.Minesweeper
         {
             if (_tileState != TileState.Hidden)
                 return;
+
+            if (_hasMine)
+                OnMineSelected?.Invoke(_x, _y);
 
             _nearbyMinesCountText.gameObject.SetActive(true);
             _tileState = TileState.Open;

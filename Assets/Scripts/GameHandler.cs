@@ -17,9 +17,16 @@ namespace Ape.Minesweeper
         [SerializeField]
         private GridLayoutGroup _gridLayout;
 
+        [SerializeField]
+        private GameObject _gameOverScreen;
+
+        private Tile[,] _tiles;
+
         private void Awake()
         {
-            var tiles = new Tile[_tileSize, _tileSize];
+            _tiles = new Tile[_tileSize, _tileSize];
+            _gameOverScreen.SetActive(false);
+
             var tileParent = (RectTransform)_gridLayout.transform;
             var cellSize = (tileParent.rect.width / _tileSize) - _gridLayout.spacing.x;
 
@@ -33,8 +40,9 @@ namespace Ape.Minesweeper
             {
                 for (var y = 0; y < _tileSize; ++y)
                 {
-                    tiles[x, y] = Instantiate(_tilePrefab, tileParent);
-                    tiles[x, y].Configure(x, y);
+                    _tiles[x, y] = Instantiate(_tilePrefab, tileParent);
+                    _tiles[x, y].Configure(x, y);
+                    _tiles[x, y].OnMineSelected += OnMineSelected;
                 }
             }
 
@@ -45,10 +53,10 @@ namespace Ape.Minesweeper
                 var x = Random.Range(0, _tileSize);
                 var y = Random.Range(0, _tileSize);
 
-                if (tiles[x, y].HasMine)
+                if (_tiles[x, y].HasMine)
                     continue;
 
-                tiles[x, y].SetMine();
+                _tiles[x, y].SetMine();
                 ++mineAdded;
             }
 
@@ -57,7 +65,7 @@ namespace Ape.Minesweeper
             {
                 for (var y = 0; y < _tileSize; ++y)
                 {
-                    tiles[x, y].SetNearbyTiles(
+                    _tiles[x, y].SetNearbyTiles(
                         new Tile[]
                         {
                             GetTile(x + 1, y + 1),
@@ -73,7 +81,21 @@ namespace Ape.Minesweeper
                 }
             }
 
-            Tile GetTile(int x, int y) => IsValidTile(x, y) ? tiles[x, y] : null;
+            Tile GetTile(int x, int y) => IsValidTile(x, y) ? _tiles[x, y] : null;
+        }
+
+        private void OnMineSelected(int x, int y)
+        {
+            // reveal all tiles
+            for (var row = 0; row < _tileSize; ++row)
+            {
+                for (var col = 0; col < _tileSize; ++col)
+                {
+                    _tiles[row, col].Reveal();
+                }
+            }
+
+            _gameOverScreen.SetActive(true);
         }
 
         private bool IsValidTile(int x, int y) =>
