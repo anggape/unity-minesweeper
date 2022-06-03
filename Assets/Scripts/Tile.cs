@@ -131,12 +131,21 @@ namespace Ape.Minesweeper
 
         private void Flag()
         {
-            if (_tileState != TileState.Flag || _tileState != TileState.Hidden)
+            if (_tileState != TileState.Flag && _tileState != TileState.Hidden)
                 return;
 
-            _tileState = _tileState == TileState.Flag ? TileState.Hidden : TileState.Flag;
-            _flagObject.SetActive(_tileState == TileState.Flag);
-            _background.color = _openColor;
+            if (_tileState == TileState.Flag)
+            {
+                _tileState = TileState.Hidden;
+                _background.color = _hiddenColor;
+                _flagObject.SetActive(false);
+            }
+            else
+            {
+                _tileState = TileState.Flag;
+                _background.color = _flagColor;
+                _flagObject.SetActive(true);
+            }
         }
     }
 }
