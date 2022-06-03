@@ -20,12 +20,17 @@ namespace Ape.Minesweeper
         [SerializeField]
         private GameObject _gameOverScreen;
 
+        [SerializeField]
+        private GameObject _winScreen;
+
         private Tile[,] _tiles;
+        private int _openedTilesCount;
 
         private void Awake()
         {
             _tiles = new Tile[_tileSize, _tileSize];
             _gameOverScreen.SetActive(false);
+            _winScreen.SetActive(false);
 
             var tileParent = (RectTransform)_gridLayout.transform;
             var cellSize = (tileParent.rect.width / _tileSize) - _gridLayout.spacing.x;
@@ -43,6 +48,7 @@ namespace Ape.Minesweeper
                     _tiles[x, y] = Instantiate(_tilePrefab, tileParent);
                     _tiles[x, y].Configure(x, y);
                     _tiles[x, y].OnMineSelected += OnMineSelected;
+                    _tiles[x, y].OnOpen += OnOpen;
                 }
             }
 
@@ -82,6 +88,12 @@ namespace Ape.Minesweeper
             }
 
             Tile GetTile(int x, int y) => IsValidTile(x, y) ? _tiles[x, y] : null;
+        }
+
+        private void OnOpen(int x, int y)
+        {
+            if (++_openedTilesCount >= (_tileSize * _tileSize) - _mineCount)
+                _winScreen.SetActive(true);
         }
 
         private void OnMineSelected(int x, int y)

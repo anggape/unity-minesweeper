@@ -45,6 +45,7 @@ namespace Ape.Minesweeper
         private int _y;
 
         public event Action<int, int> OnMineSelected;
+        public event Action<int, int> OnOpen;
 
         public bool HasMine => _hasMine;
         public int X => _x;
@@ -117,6 +118,8 @@ namespace Ape.Minesweeper
 
             if (_hasMine)
                 OnMineSelected?.Invoke(_x, _y);
+            else
+                OnOpen?.Invoke(_x, _y);
 
             _nearbyMinesCountText.gameObject.SetActive(true);
             _tileState = TileState.Open;
