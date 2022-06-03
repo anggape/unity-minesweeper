@@ -5447,7 +5447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f772087fdb9c536a6c6d9b2b6047ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileSize: 5
+  _tileSize: 10
   _mineCount: 10
   _tilePrefab: {fileID: 6381210015862941168, guid: 0e11b261c5f1070139b46db4c0f665fc, type: 3}
   _gridLayout: {fileID: 1018861305}
