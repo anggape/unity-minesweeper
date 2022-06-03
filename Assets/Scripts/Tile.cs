@@ -81,7 +81,8 @@ namespace Ape.Minesweeper
             }
 
             _nearbyTiles = tiles.ToArray();
-            _nearbyMinesCountText.text = _nearbyMinesCount.ToString();
+            _nearbyMinesCountText.text =
+                _nearbyMinesCount > 0 ? _nearbyMinesCount.ToString() : string.Empty;
         }
 
         internal void SetMine()
