@@ -378,3 +378,7 @@ MonoBehaviour:
   _nearbyMinesCountText: {fileID: 6381210015829288420}
   _mineDebugObject: {fileID: 786504229}
   _flagObject: {fileID: 824077956}
+  _background: {fileID: 6381210015862941170}
+  _hiddenColor: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 1}
+  _openColor: {r: 0.11764706, g: 0.11764706, b: 0.11764706, a: 1}
+  _flagColor: {r: 0.11764706, g: 0.15686275, b: 0.15686275, a: 1}

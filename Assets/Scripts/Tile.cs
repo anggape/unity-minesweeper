@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Ape.Minesweeper
 {
@@ -24,6 +25,18 @@ namespace Ape.Minesweeper
         [SerializeField]
         private GameObject _flagObject;
 
+        [SerializeField]
+        private Image _background;
+
+        [SerializeField]
+        private Color _hiddenColor;
+
+        [SerializeField]
+        private Color _openColor;
+
+        [SerializeField]
+        private Color _flagColor;
+
         private Tile[] _nearbyTiles;
         private TileState _tileState;
         private bool _hasMine;
@@ -43,6 +56,7 @@ namespace Ape.Minesweeper
             _nearbyMinesCountText.gameObject.SetActive(false);
             _mineDebugObject.SetActive(false);
             _flagObject.SetActive(false);
+            _background.color = _hiddenColor;
         }
 
         internal void Configure(int x, int y)
@@ -105,6 +119,7 @@ namespace Ape.Minesweeper
 
             _nearbyMinesCountText.gameObject.SetActive(true);
             _tileState = TileState.Open;
+            _background.color = _openColor;
 
             if (_nearbyMinesCount == 0)
             {
@@ -115,11 +130,12 @@ namespace Ape.Minesweeper
 
         private void Flag()
         {
-            if (_tileState == TileState.Flag || _tileState == TileState.Hidden)
-            {
-                _tileState = _tileState == TileState.Flag ? TileState.Hidden : TileState.Flag;
-                _flagObject.SetActive(_tileState == TileState.Flag);
-            }
+            if (_tileState != TileState.Flag || _tileState != TileState.Hidden)
+                return;
+
+            _tileState = _tileState == TileState.Flag ? TileState.Hidden : TileState.Flag;
+            _flagObject.SetActive(_tileState == TileState.Flag);
+            _background.color = _openColor;
         }
     }
 }
