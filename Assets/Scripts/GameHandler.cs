@@ -28,6 +28,9 @@ namespace Ape.Minesweeper
 
         private void Awake()
         {
+            _tileSize = PlayerPrefs.GetInt(MenuHandler.TileSizePrefs);
+            _mineCount = PlayerPrefs.GetInt(MenuHandler.MineCountPrefs);
+
             _tiles = new Tile[_tileSize, _tileSize];
             _gameOverScreen.SetActive(false);
             _winScreen.SetActive(false);
